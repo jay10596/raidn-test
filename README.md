@@ -14,15 +14,16 @@ Whenever I get to work with a laravel project, my approach is to setup the db, l
   
 Once I'm satisfied with the backend, I would start scaffolding the frontend and install required dependencies. Once the structure is ready, I would start making api calls to backend to fetch respective data. In the end, once everything is implemented, I would work on designing.
 
-_\*As this was a fairly simple and small test, I haven't performed tests and authentication as it wasn't mentioned in the task description. Design is also fairly simple. I could add a lot of interesting stuff but for this test I'm keeping it task oriented.\*  
-_
+\*As this was a fairly simple and small test, I haven't performed tests and authentication as it wasn't mentioned in the task description. Design is also fairly simple. I could add a lot of interesting stuff but for this test I'm keeping it task oriented.\*  
+
 
 **Steps to run project**
 
 *   Clone the repo
 *   Setup .env file with correct DB details
 *   Run 'php artisan migrate:fresh --seed' for fake data
-*   Run 'npm install' to install all dependencies
+*   Run 'npm install' and 'composer install' to install all dependencies
+*   Run 'php artisan key:generate' to generate key
 *   Run 'php artisan serve' and 'npm run watch'
 *   You can use the browser to test the functionality
 *   Run 'php artisan card:type' which is a custom command to check the card type. The card number input is secured, so you won't be able to see number while entering. 
