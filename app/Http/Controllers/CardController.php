@@ -13,7 +13,7 @@ class CardController extends Controller
 {
     public function index()
     {
-        $cards = Card::all();
+        $cards = Card::latest()->get();
 
         return new CardCollection($cards);
     }
