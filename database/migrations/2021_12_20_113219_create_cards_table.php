@@ -17,8 +17,9 @@ class CreateCardsTable extends Migration
             $table->id();
             $table->string('number');
             $table->string('cvv');
+            $table->string('type');
             $table->string('owner');
-            $table->boolean('expiration_date');
+            $table->date('expiration_date');
             $table->boolean('is_valid');
             $table->timestamps();
         });
