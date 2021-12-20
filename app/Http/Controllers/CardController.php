@@ -2,84 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Card;
 use Illuminate\Http\Request;
+use App\Models\Card;
+use App\Http\Resources\Card as CardResource;
+use App\Http\Resources\CardCollection;
+use App\Http\Requests\CardRequest;
+use App\Helper\Helper;
 
 class CardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $cards = Card::all();
+
+        return new CardCollection($cards);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        // As we are using Vue for frontend, no need of returning the view to create-card the form 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CardRequest $request)
     {
-        //
+        $card = Card::create([
+            'number' => Helper::set_number_format($request->number),
+            'cvv' => $request->cvv,
+            'type' => Helper::check_card_type($request->number[0]),
+            'owner' => $request->owner,
+            'expiration_date' => $request->expiration_date,
+            'is_valid' => Helper::is_valid($request->number)
+        ]);
+
+        return response($card, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Card  $card
-     * @return \Illuminate\Http\Response
-     */
     public function show(Card $card)
     {
-        //
+        return new CardResource($card);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Card  $card
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Card $card)
     {
-        //
+        // As we are using Vue for frontend, no need of returning the view to edit-card the form 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Card  $card
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Card $card)
+    public function update(CardRequest $request, Card $card)
     {
-        //
+        $card->update([
+            'number' => Helper::set_number_format($request->number),
+            'cvv' => $request->cvv,
+            'type' => Helper::check_card_type($request->number[0]),
+            'owner' => $request->owner,
+            'expiration_date' => $request->expiration_date,
+            'is_valid' => Helper::is_valid($request->number)
+        ]);
+
+		return response($card, 202);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Card  $card
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Card $card)
     {
-        //
+        $card->delete();
+
+		return response('Deleted', 204);
+    }
+
+    public function filter($filter)
+    {
+        $filtered_cards = Helper::fetch_filtered_cards($filter);
+
+        return new CardCollection($filtered_cards);
     }
 }
